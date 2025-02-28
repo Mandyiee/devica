@@ -22,7 +22,7 @@ connectDB();
 app.use(express.json());
 app.use(cors({
   origin: '*',
-  methods: ['GET', 'POST', 'HEAD', 'PUT'],
+  methods: ['GET', 'POST', 'HEAD', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true
 }));
@@ -54,7 +54,20 @@ const cleanInactiveDevices = () => {
 // Run cleanup every 30 seconds
 setInterval(cleanInactiveDevices, 30000);
 
-// API Endpoints
+app.get('/view/:id', async (req, res) => {
+  const { id } = req.params;
+
+  try {
+      const device = await Device.findById(id);
+      if (!device) {
+          return res.status(404).json({ error: 'Device not found' });
+      }
+      res.json({ name: device.name, type: device.deviceType,components: device.components });
+  } catch (error) {
+      console.error('Error fetching components:', error);
+      res.status(500).json({ error: 'Internal server error' });
+  }
+});
 
 // 1. Device Connect Notification
 app.post('/api/device-connect', async (req, res) => {

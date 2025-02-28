@@ -96,5 +96,31 @@ router.put('/:id', async (req, res) => {
     }
 });
 
+router.delete('/:id', async (req, res) => {
+    
+    try {
+      const device = await Device.findById(req.params.id);
+      
+      if (!device) {
+        return res.status(404).json({ message: 'Device not found' });
+      }
+     
+     
+      
+if (device.user_id != req.user._id.toString()) {
+    return res.status(401).json({ message: 'User not authorized' });
+  }
+      
+      await device.deleteOne();
+      
+      res.json({ message: 'Device removed successfully' });
+    } catch (err) {
+      console.error(err.message);
+      if (err.kind === 'ObjectId') {
+        return res.status(404).json({ message: 'Device not found' });
+      }
+      res.status(500).json({ message: 'Server error' });
+    }
+  });
 
 export default router;
