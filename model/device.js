@@ -20,7 +20,9 @@ const deviceSchema = new mongoose.Schema({
                     component : String,
                      rowSpan: Number, 
                      colSpan: Number,
-                    status: Number
+                    status: Number,
+                    color: String,
+                    icon: String,
                 },
             ],
         

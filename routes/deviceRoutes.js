@@ -8,8 +8,7 @@ router.use(requireAuth);
 
 router.post('/add', async (req, res) => {
     try {
-    const { device_name, device_type } = req.body;
-
+    const { device_name, device_type, components } = req.body;
     if( device_name && device_type ) {
         let deviceExists = await Device.findOne({ device_name })
         if (deviceExists) {
@@ -19,7 +18,8 @@ router.post('/add', async (req, res) => {
          const device = await Device.create({
             user_id,
             name: device_name,
-            deviceType: device_type
+            deviceType: device_type,
+            components: components,
         })
         if (device) {
             res.status(201).json({
