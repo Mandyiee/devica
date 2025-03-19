@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
-import Device from "./device";
+import Device from './device.js';
 
 const userSchema = new mongoose.Schema({
     name: {
